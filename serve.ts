@@ -8,6 +8,9 @@ import { extname, join, normalize, resolve, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('./game', import.meta.url)));
+// shots.json describes the screenshots and lives beside main.ts, outside game/; it is served too so the
+// metadata sits next to the builds it describes (GET /shots.json).
+const shotsFile = resolve(fileURLToPath(new URL('./shots.json', import.meta.url)));
 const args = process.argv.slice(2);
 const portIndex = args.indexOf('--port');
 const requested = portIndex === -1 ? 8080 : Number(args[portIndex + 1]);
@@ -47,6 +50,23 @@ createServer((request, response) => {
     return;
   }
   if (pathname.endsWith('/')) pathname += 'index.html';
+  // /shots.json is served from beside main.ts, not from under game/.
+  if (pathname === '/shots.json') {
+    let ssize: number;
+    try {
+      ssize = statSync(shotsFile).size;
+    } catch {
+      response.writeHead(404).end('not found');
+      return;
+    }
+    response.writeHead(200, {
+      'content-type': 'application/json; charset=utf-8',
+      'content-length': ssize,
+      'cache-control': 'no-store',
+    });
+    createReadStream(shotsFile).pipe(response);
+    return;
+  }
   const file = resolve(join(root, normalize(pathname)));
   if (file !== root && !file.startsWith(root + sep)) {
     response.writeHead(403).end('forbidden');

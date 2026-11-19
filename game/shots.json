@@ -1,0 +1,30 @@
+{
+  "game": "Palm Coast Stories",
+  "controls": [
+    { "keys": "WASD / arrows", "action": "walk; drive when in a car" },
+    { "keys": "Enter", "action": "start / continue from the title screen" },
+    { "keys": "F", "action": "enter or exit the nearest car" },
+    { "keys": "Space", "action": "fire" },
+    { "keys": "Shift", "action": "sprint on foot" }
+  ],
+  "shots": [
+    {
+      "name": "1-cover.png",
+      "query": "?shot=cover",
+      "title": "Title screen",
+      "description": "The Palm Coast Stories cover: city skyline behind the title, press Enter to start."
+    },
+    {
+      "name": "2-driving.png",
+      "query": "?shot=driving",
+      "title": "Driving through traffic",
+      "description": "Behind the wheel at wanted level 3, weaving through NPC traffic as police close in."
+    },
+    {
+      "name": "3-mission.png",
+      "query": "?shot=mission",
+      "title": "Mission waypoint",
+      "description": "On foot beside the active mission marker, HUD toast naming the Marina drop objective."
+    }
+  ]
+}
